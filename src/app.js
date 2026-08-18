@@ -41,6 +41,17 @@ app.use(mongoSanitize());
 // Rate Limiting for API routes
 app.use('/api', apiLimiter);
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Welcome to EventPulse Backend API',
+    version: '1.0.0',
+    health: '/health',
+    documentation: '/api-docs',
+    api: '/api/events'
+  });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   const dbStatus =
