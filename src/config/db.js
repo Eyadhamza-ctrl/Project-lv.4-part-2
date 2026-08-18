@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 export const connectDB = async () => {
-  if (mongoose.connection.readyState === 1) {
+  if (mongoose.connection.readyState >= 1) {
     return mongoose.connection;
   }
 
@@ -11,7 +11,9 @@ export const connectDB = async () => {
       process.env.MONGODB_URI ||
       'mongodb://127.0.0.1:27017/eventpulse';
 
-    const conn = await mongoose.connect(mongoUri);
+    const conn = await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 5000
+    });
     console.log(`MongoDB Connected: ${conn.connection.host}`);
     return conn;
   } catch (error) {
